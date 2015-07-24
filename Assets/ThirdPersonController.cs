@@ -341,7 +341,13 @@ public class ThirdPersonController : MonoBehaviour
     Vector3 velocity = Vector3.zero;
 //?g???K?[??????
     void OnTriggerStay(Collider other)
-    {
+	{
+		// 自身の向きベクトル取得
+		float angleDir = transform.eulerAngles.z * (Mathf.PI / 180.0f);
+		Vector3 dir = new Vector3 (Mathf.Cos (angleDir), Mathf.Sin (angleDir), 0.0f);
+		print ("Myvector:"+dir);
+
+		//if (other.gameObject.name != transform.name && counts < 110 && dir ==1)
         if (other.gameObject.name != transform.name && counts < 110)
         {
             counts++;
@@ -360,11 +366,11 @@ public class ThirdPersonController : MonoBehaviour
 	}
 		IEnumerator ChangeColorCoroutine()
 		{
-			//var renderer = GetComponent<Renderer>();
-			//ChangeColorCoroutine(renderer, Color.red);
+			//start cross motion
 			if (stopTest == false){
 			// 0.5???
 			yield return new WaitForSeconds(3.5f);
+			//finish motion
 			stopTest = true;
 			m_Animator.SetBool("Shoryuken", false);
 			counts=0;
