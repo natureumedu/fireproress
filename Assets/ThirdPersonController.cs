@@ -94,6 +94,7 @@ public class ThirdPersonController : MonoBehaviour
 	Animator m_Animator;
     void Awake()
     {
+		NetworkView networkView = new NetworkView ();
 
         transform.name = GetComponent<PhotonView>().viewID.ToString();
       
@@ -339,7 +340,35 @@ public class ThirdPersonController : MonoBehaviour
     }
 
     Vector3 velocity = Vector3.zero;
+	
+	//-----------------------------------------------------------------------
+	//8/7
+	//
+	//
+	//
+	
+	sendHP(int enemyHP,int enemyID,string other.gameObject.name){
+		
+	}
+	
+	void OnTriggerEnter(Collider other) { 
+		//now ANIMEmotion
+		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+
+
+
+		//Attack version
+		if (stateInfo==attackmotion) {
+			enemyHP = -10;
+				//sendHP(enemyHP,enemyID,other.gameObject.name);
+			networkView.RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
+			
+		}
+	}
+	
 //?g???K?[??????
+	
     void OnTriggerStay(Collider other)
 	{
 		// 自身の向きベクトル取得
