@@ -342,31 +342,33 @@ public class ThirdPersonController : MonoBehaviour
     Vector3 velocity = Vector3.zero;
 	
 	//-----------------------------------------------------------------------
-	//8/7
+	//8/7add
 	//
 	//
 	//
 	
-	sendHP(int enemyHP,int enemyID,string other.gameObject.name){
-		
-	}
 	
-	void OnTriggerEnter(Collider other) { 
-		//now ANIMEmotion
-		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
-
-
-
-		//Attack version
-		if (stateInfo==attackmotion) {
-			enemyHP = -10;
-				//sendHP(enemyHP,enemyID,other.gameObject.name);
-			networkView.RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
-			
-		}
-	}
 	
+//	sendHP(int enemyHP,int enemyID,string other.gameObject.name){
+//		
+//	}
+//	
+//	void OnTriggerEnter(Collider other) { 
+//		//now ANIMEmotion
+//		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+//
+//
+//
+//
+//		//Attack version
+//		if (stateInfo==attackmotion) {
+//			enemyHP = -10;
+//				//sendHP(enemyHP,enemyID,other.gameObject.name);
+//			networkView.RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
+//			
+//		}
+//	}
+//	
 //?g???K?[??????
 	
     void OnTriggerStay(Collider other)
