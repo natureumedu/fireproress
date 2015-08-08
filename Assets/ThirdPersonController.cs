@@ -347,36 +347,44 @@ public class ThirdPersonController : MonoBehaviour
 	//
 	//
 	
+	private PhotonView m_photonView = null;
 	
+	void sendHP(int enemyHP,int enemyID){
+		if(enemyID == GetComponent<PhotonView>().viewID)
+		{
+			HPs mc=new HPs();
+			//int HP=mc.gethandsHP();
+			mc.setfootHP(enemyHP);
+			print(mc.footsHP);
+		}
+		
+	}
+
+	void OnTriggerEnter(Collider other) { 
+		//now ANIMEmotion
+		AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+
+
+		print ("stateInfo="+stateInfo);
+
+		//Attack version
+		if (stateInfo.nameHash==Animator.StringToHash("HiKick")) {
+			int enemyHP = -10;
+				//sendHP(enemyHP,enemyID,other.gameObject.name);
+			//GetComponent<NetworkView>().RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
+			//GetComponent<NetworkView>().RPC ("sendHP", RPCMode.Others, "enemyHP,enemyID");
+			m_photonView.RPC("sendHP", PhotonTargets.Others, "enemyHP,enemyID");
+		}
+	}
 	
-//	sendHP(int enemyHP,int enemyID,string other.gameObject.name){
-//		
-//	}
-//	
-//	void OnTriggerEnter(Collider other) { 
-//		//now ANIMEmotion
-//		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-//
-//
-//
-//
-//		//Attack version
-//		if (stateInfo==attackmotion) {
-//			enemyHP = -10;
-//				//sendHP(enemyHP,enemyID,other.gameObject.name);
-//			networkView.RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
-//			
-//		}
-//	}
-//	
 //?g???K?[??????
 	
     void OnTriggerStay(Collider other)
 	{
-		// 自身の向きベクトル取得
-		float angleDir = transform.eulerAngles.z * (Mathf.PI / 180.0f);
-		Vector3 dir = new Vector3 (Mathf.Cos (angleDir), Mathf.Sin (angleDir), 0.0f);
-		print ("Myvector:"+dir);
+		// GET Myfrontstate		
+//		float angleDir = transform.eulerAngles.z * (Mathf.PI / 180.0f);
+//		Vector3 dir = new Vector3 (Mathf.Cos (angleDir), Mathf.Sin (angleDir), 0.0f);
+//		print ("Myvector:"+dir);
 
 		//if (other.gameObject.name != transform.name && counts < 110 && dir ==1)
         if (other.gameObject.name != transform.name && counts < 110)
