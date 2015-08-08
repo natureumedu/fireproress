@@ -94,7 +94,7 @@ public class ThirdPersonController : MonoBehaviour
 	Animator m_Animator;
     void Awake()
     {
-		NetworkView networkView = new NetworkView ();
+		//NetworkView networkView = new NetworkView ();
 
         transform.name = GetComponent<PhotonView>().viewID.ToString();
       
@@ -348,7 +348,7 @@ public class ThirdPersonController : MonoBehaviour
 	//
 	
 	private PhotonView m_photonView = null;
-	
+	[PunRPC]
 	void sendHP(int enemyHP,int enemyID){
 		if(enemyID == GetComponent<PhotonView>().viewID)
 		{
@@ -360,17 +360,24 @@ public class ThirdPersonController : MonoBehaviour
 		
 	}
 
+	//add colider 8/8
+	//anime number another save
+
 	void OnTriggerEnter(Collider other) { 
 		//now ANIMEmotion
 		AnimatorStateInfo stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
 
+		print("trigerEnter   ");
+		print(Animator.StringToHash("Base Layer.New State 5"));
 
-		print ("stateInfo="+stateInfo);
+		print ("stateInfo="+stateInfo.nameHash);
 
 		//Attack version
-		if (stateInfo.nameHash==Animator.StringToHash("HiKick")) {
-			int enemyHP = -10;
-				//sendHP(enemyHP,enemyID,other.gameObject.name);
+		if (stateInfo.nameHash==Animator.StringToHash("Base Layer.New State 5")) {//kick
+			int enemyHP = 10;
+			int enemyID = other.gameObject.GetComponent<PhotonView>().viewID;
+			print (enemyID);
+			//sendHP(enemyHP,enemyID,other.gameObject.name);
 			//GetComponent<NetworkView>().RPC ("sendHP", RPCMode.other, "enemyHP,enemyID,other.gameObject.name");
 			//GetComponent<NetworkView>().RPC ("sendHP", RPCMode.Others, "enemyHP,enemyID");
 			m_photonView.RPC("sendHP", PhotonTargets.Others, "enemyHP,enemyID");
@@ -387,37 +394,37 @@ public class ThirdPersonController : MonoBehaviour
 //		print ("Myvector:"+dir);
 
 		//if (other.gameObject.name != transform.name && counts < 110 && dir ==1)
-        if (other.gameObject.name != transform.name && counts < 110)
-        {
-            counts++;
-            print(other.name);
-            if (counts >= 100 && isControllable)
-            {
-                stopTest = false;
-				StartCoroutine(ChangeColorCoroutine());
-                Vector3 test = other.transform.position;
-             
-                transform.LookAt(test);
-                m_Animator.SetBool("Shoryuken", true);
-       
-            }
-        }
-	}
-		IEnumerator ChangeColorCoroutine()
-		{
-			//start cross motion
-			if (stopTest == false){
-			// 0.5???
-			yield return new WaitForSeconds(3.5f);
-			//finish motion
-			stopTest = true;
-			m_Animator.SetBool("Shoryuken", false);
-			counts=0;
-			print(stopTest);
-			print(counts);
-
-			}
-			//ChangeColorCoroutine(renderer, Color.green);
+//        if (other.gameObject.name != transform.name && counts < 110)
+//        {
+//            counts++;
+//            print(other.name);
+//            if (counts >= 100 && isControllable)
+//            {
+//                stopTest = false;
+//				StartCoroutine(ChangeColorCoroutine());
+//                Vector3 test = other.transform.position;
+//             
+//                transform.LookAt(test);
+//                m_Animator.SetBool("Shoryuken", true);
+//       
+//            }
+//        }
+//	}
+//		IEnumerator ChangeColorCoroutine()
+//		{
+//			//start cross motion
+//			if (stopTest == false){
+//			// 0.5???
+//			yield return new WaitForSeconds(3.5f);
+//			//finish motion
+//			stopTest = true;
+//			m_Animator.SetBool("Shoryuken", false);
+//			counts=0;
+//			print(stopTest);
+//			print(counts);
+//
+//			}
+//			//ChangeColorCoroutine(renderer, Color.green);
 		}
 
 
@@ -433,8 +440,14 @@ public class ThirdPersonController : MonoBehaviour
         GUI.Label(new Rect(0, 0, 100, 50), "test                   " + GetComponent<PhotonView>().viewID);
 
     }
+
+	AnimatorStateInfo stateInfo;
     void Update()
     {        
+		//now ANIMEmotion
+		//stateInfo = m_Animator.GetCurrentAnimatorStateInfo(0);
+		//print ("UPdate stateInfo="+stateInfo.nameHash);
+
         if (isControllable && stopTest)
         {
             if (Input.GetButtonDown("Jump"))
