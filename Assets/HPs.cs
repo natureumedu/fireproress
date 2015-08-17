@@ -12,12 +12,12 @@ public class HPs : MonoBehaviour {
 	
 	}
 	public int getfootHP(){
-		return footsHP;
+		return handsHP;
 
 	}
 
 	public void setfootHP(int newX){
-		footsHP = footsHP+newX;
+		footsHP = footsHP-newX;
 	}
 	// Update is called once per frame
 	void Update () {
